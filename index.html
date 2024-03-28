@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NyaCap</title>
+    <style>
+      html {
+        width: 100%;
+        height: 100%;
+        background-color: #16202f;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        position: relative;
+        font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #root {
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import { NewCaptcha } from "/lib/main.tsx";
+
+      NewCaptcha({
+        el: document.getElementById("root"),
+        instance: "http://localhost:8080",
+        siteKey: "test",
+      });
+    </script>
+  </body>
+</html>
