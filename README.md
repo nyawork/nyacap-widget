@@ -1,4 +1,4 @@
-# NyaCaptcha Widget
+# NyaCap Widget
 
 ## 关于
 
