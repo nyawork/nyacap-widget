@@ -2,7 +2,7 @@
 
 ## 关于
 
-请参见文档: https://docs.nyacap.com/widget
+请参见文档: https://docs.nyacap.com/components/widget/
 
 ## 非常感谢
 
