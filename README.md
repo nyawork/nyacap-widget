@@ -1,3 +1,21 @@
 # NyaCaptcha Widget
 
-Fork 并重写了 [wenlng/go-captcha-react](https://github.com/wenlng/go-captcha-react) 。非常感谢！
+## 关于
+
+请参见文档: https://docs.nyacap.com/widget
+
+## 非常感谢
+
+### 参考代码
+
+- [wenlng/go-captcha-react](https://github.com/wenlng/go-captcha-react)
+
+### 构建工具
+
+- [Vite](https://github.com/vitejs/vite)
+
+### 其他依赖
+
+- [React](https://github.com/facebook/react)
+- [react-hot-toast](https://github.com/timolins/react-hot-toast)
+- [rc-tooltip](https://github.com/react-component/tooltip)
