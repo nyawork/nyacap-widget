@@ -7,12 +7,14 @@ interface CaptchaProps {
   siteKey: string;
   maxDots: number;
   maxFailCount: number;
+  inputName: string;
 }
 const Captcha = ({
   instance,
   siteKey,
   maxDots,
   maxFailCount,
+  inputName,
 }: CaptchaProps) => {
   const [captKey, setCaptKey] = useState("");
   const [captStatus, setCaptStatus] = useState<Status>("default");
@@ -94,7 +96,7 @@ const Captcha = ({
         style={{
           visibility: "hidden",
         }}
-        name="captcha"
+        name={inputName}
         value={captKey}
         readOnly
       />

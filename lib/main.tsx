@@ -9,6 +9,7 @@ interface NewCaptchaProps {
   siteKey: string;
   maxDots?: number;
   maxFailCount?: number;
+  inputName?: string;
 }
 export const NewCaptcha = ({
   el,
@@ -16,6 +17,7 @@ export const NewCaptcha = ({
   siteKey,
   maxDots = 5,
   maxFailCount = 3,
+  inputName = "captcha",
 }: NewCaptchaProps) => {
   return ReactDOM.createRoot(el).render(
     <React.StrictMode>
@@ -24,6 +26,7 @@ export const NewCaptcha = ({
         siteKey={siteKey}
         maxDots={maxDots}
         maxFailCount={maxFailCount}
+        inputName={inputName}
       />
     </React.StrictMode>,
   );
