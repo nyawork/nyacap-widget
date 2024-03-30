@@ -6,12 +6,12 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/main.cjs",
-  "module": "./dist/main.js",
+  "main": "./dist/widget.cjs",
+  "module": "./dist/widget.umd.js",
   "exports": {
     ".": {
-      "import": "./dist/captcha.js",
-      "require": "./dist/captcha.umd.cjs"
+      "import": "./dist/widget.js",
+      "require": "./dist/widget.umd.cjs"
     }
   },
   "scripts": {
