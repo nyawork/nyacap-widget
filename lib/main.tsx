@@ -18,8 +18,8 @@ export const NewCaptcha = ({
   maxDots = 5,
   maxFailCount = 3,
   inputName = "captcha",
-}: NewCaptchaProps) => {
-  return ReactDOM.createRoot(el).render(
+}: NewCaptchaProps) =>
+  ReactDOM.createRoot(el).render(
     <React.StrictMode>
       <Captcha
         instance={instance}
@@ -30,6 +30,5 @@ export const NewCaptcha = ({
       />
     </React.StrictMode>,
   );
-};
 
 export default NewCaptcha;
