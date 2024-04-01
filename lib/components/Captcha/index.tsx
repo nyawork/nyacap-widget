@@ -1,6 +1,10 @@
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import CaptchaBtn from "../CaptchaBtn";
+import Tooltip from "rc-tooltip";
+import CaptchaBody from "../CaptchaBody";
+
+import "./tooltip-styles.css";
 
 interface CaptchaProps {
   instance: string;
@@ -75,23 +79,92 @@ const Captcha = ({
     }
   };
 
-  const handleCancel = () => {
+  const handleOpenCaptchaBody = () => {
+    setIsCaptchaBodyOpen(true);
+    handleRequestCaptcha();
+  };
+
+  const handleConfirmEvent = (data: Dot[]) => {
+    handleSubmitCaptcha(data); // 提交
+    handleCloseEvent();
+  };
+
+  const handleCloseEvent = () => {
+    setIsCaptchaBodyOpen(false); // 关闭验证码界面
+  };
+
+  const handleCancelEvent = () => {
     setCaptStatus("default");
+    handleCloseEvent();
+  };
+
+  const [isCaptchaBodyOpen, setIsCaptchaBodyOpen] = useState(false);
+
+  const handleCaptchaBodyVisibleChange = (visible: boolean) => {
+    if (visible) {
+      // 从关到开，更新验证码状态
+      handleOpenCaptchaBody();
+    } else {
+      // 从开到关，清理验证码状态
+      handleCancelEvent();
+    }
   };
 
   return (
     <>
-      <CaptchaBtn
-        captStatus={captStatus}
-        width="100%"
-        height="50px"
-        maxDots={maxDots}
-        imageBase64={imageBase64}
-        thumbBase64={thumbBase64}
-        confirm={handleSubmitCaptcha}
-        refresh={handleRequestCaptcha}
-        cancel={handleCancel}
-      />
+      <Fragment>
+        <div
+          className="cap-btn"
+          style={{
+            width: "100%",
+            height: "50px",
+          }}
+        >
+          <div className={`cap-btn__inner cap-active__${captStatus}`}>
+            {/*弹出验证码*/}
+            <Tooltip
+              overlay={
+                <CaptchaBody
+                  // value={popoverVisible}
+                  width="300px"
+                  height="240px"
+                  maxDots={maxDots}
+                  calcPosType="screen"
+                  imageBase64={imageBase64}
+                  thumbBase64={thumbBase64}
+                  cancel={handleCancelEvent}
+                  refresh={handleRequestCaptcha}
+                  confirm={handleConfirmEvent}
+                />
+              }
+              trigger={"click"}
+              visible={isCaptchaBodyOpen}
+              onVisibleChange={handleCaptchaBodyVisibleChange}
+              placement="top"
+              forceRender={true}
+              motion={{
+                motionName: "nc-popup-zoom",
+                motionDeadline: 1000,
+              }}
+              overlayInnerStyle={{
+                backgroundColor: "#fff",
+                padding: "12px",
+              }}
+              prefixCls="nc-popup"
+              align={{
+                offset: [0, -12],
+              }}
+            >
+              {/*按钮*/}
+              <CaptchaBtn
+                captStatus={captStatus}
+                openCaptchaBody={handleOpenCaptchaBody}
+              />
+            </Tooltip>
+          </div>
+        </div>
+      </Fragment>
+
       <input
         style={{
           visibility: "hidden",
