@@ -6,8 +6,8 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/widget.cjs",
-  "module": "./dist/widget.umd.js",
+  "main": "./dist/widget.js",
+  "module": "./dist/widget.umd.cjs",
   "exports": {
     ".": {
       "import": "./dist/widget.js",
