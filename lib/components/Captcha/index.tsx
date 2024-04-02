@@ -1,5 +1,4 @@
 import { Fragment, useRef, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import CaptchaBtn from "../CaptchaBtn";
 import Tooltip from "rc-tooltip";
 import CaptchaBody from "../CaptchaBody";
@@ -51,7 +50,6 @@ const Captcha = ({
       setThumbBase64(captcha.t);
     } catch (e) {
       console.log(e);
-      toast.error("获取验证数据失败");
     }
   };
 
@@ -69,12 +67,9 @@ const Captcha = ({
       }).then((res) => res.json());
 
       if (res.s) {
-        toast.success("验证通过");
         setCaptStatus("success");
         captAutoRefreshCount.current = 0;
       } else {
-        toast.error("验证失败");
-
         if (captAutoRefreshCount.current > maxFailCount) {
           // 错误次数太多，歇一会吧
           setCaptStatus("over");
@@ -86,7 +81,6 @@ const Captcha = ({
       }
     } catch (e) {
       console.log(e);
-      toast.error("获取验证数据失败");
     }
   };
 
@@ -179,8 +173,6 @@ const Captcha = ({
         required
         readOnly
       />
-
-      <Toaster />
     </>
   );
 };

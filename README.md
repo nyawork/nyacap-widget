@@ -17,5 +17,4 @@
 ### 其他依赖
 
 - [React](https://github.com/facebook/react)
-- [react-hot-toast](https://github.com/timolins/react-hot-toast)
 - [rc-tooltip](https://github.com/react-component/tooltip)
