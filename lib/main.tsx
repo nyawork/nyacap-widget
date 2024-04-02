@@ -83,4 +83,17 @@ export const NewCaptcha = ({
       cbTimeout: options["expired-callback"],
     });
   },
+
+  // remove: (id: string) => {
+  //   // TODO
+  // };
+  // execute: (id: string) => {
+  //   // TODO
+  // };
+  // reset: (id?: string) => {
+  //   // TODO
+  // };
+  // getResponse: (id: string) => {
+  //   // TODO
+  // };
 };
