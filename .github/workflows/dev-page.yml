@@ -38,6 +38,8 @@ jobs:
         run: |
           pnpm build
           touch dist/.nojekyll
+      - name: Rename script ext # to prevent MIME type conflict (don't know why it's `application/node`)
+        run: mv dist/widget.umd.cjs dist/widget.umd.js
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -51,8 +53,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - name: Rename script ext # to prevent MIME type conflict (don't know why it's `application/node`)
-        run: mv widget.umd.cjs widget.umd.js
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
