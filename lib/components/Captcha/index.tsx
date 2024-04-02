@@ -27,14 +27,42 @@ const Captcha = ({
   inputName,
   cbSuccess,
   cbFail,
-  // cbTimeout, // TODO
+  cbTimeout,
 }: CaptchaProps) => {
   const [captKey, setCaptKey] = useState("");
+
+  const [isCaptchaBodyOpen, setIsCaptchaBodyOpen] = useState(false);
+
   const [captStatus, setCaptStatus] = useState<Status>("default");
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [thumbBase64, setThumbBase64] = useState<string | null>(null);
 
   const captAutoRefreshCount = useRef(0);
+
+  const captTimeoutHandler = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelTimeout = () => {
+    if (captTimeoutHandler.current) {
+      clearTimeout(captTimeoutHandler.current);
+      captTimeoutHandler.current = null;
+    }
+  };
+  const setCaptTimeoutEvent = (when: number) => {
+    // 清除上一个超时事件
+    cancelTimeout();
+
+    // 设置新的超时事件
+    captTimeoutHandler.current = setTimeout(() => {
+      handleCloseEvent();
+
+      // 设置为超时状态
+      setCaptStatus("timeout");
+
+      // 回调超时事件
+      if (cbTimeout) {
+        cbTimeout();
+      }
+    }, when - new Date().getTime());
+  };
 
   const handleRequestCaptcha = async () => {
     // 清理当前的
@@ -57,12 +85,16 @@ const Captcha = ({
       setCaptKey(captcha.k);
       setImageBase64(captcha.b);
       setThumbBase64(captcha.t);
+      setCaptTimeoutEvent(captcha.e * 1000); // 将 Unix 秒转换为毫秒
     } catch (e) {
       console.log(e);
     }
   };
 
   const handleSubmitCaptcha = async (dots: Dot[]) => {
+    // 提交了就不用再在意是否超时了
+    cancelTimeout();
+
     try {
       const res = await fetch(`${instance}/captcha/submit`, {
         method: "POST",
@@ -81,6 +113,7 @@ const Captcha = ({
         if (cbSuccess) {
           cbSuccess(captKey);
         }
+        setCaptTimeoutEvent(res.e * 1000); // 将 Unix 秒转换为毫秒
       } else {
         if (captAutoRefreshCount.current > maxFailCount) {
           // 错误次数太多，歇一会吧
@@ -116,9 +149,10 @@ const Captcha = ({
   const handleCancelEvent = () => {
     setCaptStatus("default");
     handleCloseEvent();
-  };
 
-  const [isCaptchaBodyOpen, setIsCaptchaBodyOpen] = useState(false);
+    // 取消了就不用再在意是否超时了
+    cancelTimeout();
+  };
 
   const handleCaptchaBodyVisibleChange = (visible: boolean) => {
     if (visible) {
