@@ -154,7 +154,7 @@ const Captcha = ({
               visible={isCaptchaBodyOpen}
               onVisibleChange={handleCaptchaBodyVisibleChange}
               placement="top"
-              forceRender={true}
+              destroyTooltipOnHide={true}
               motion={{
                 motionName: "nc-popup-zoom",
                 motionDeadline: 1000,
