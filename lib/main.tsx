@@ -50,15 +50,24 @@ export const NewCaptcha = ({
     el: HTMLElement,
     options: {
       sitekey: string; // https://mini.nyacap.com/widget?sitekey=demo
+      instance?: string;
       theme?: "light" | "dark";
       callback?: (key: string) => void;
       "expired-callback"?: () => void;
       "error-callback"?: () => void;
     },
   ) => {
-    const parsedSiteKey = new URL(options.sitekey);
-    const instance = parsedSiteKey.origin;
-    const siteKey = parsedSiteKey.searchParams.get("sitekey");
+    let instance, siteKey;
+
+    // 两种配置方式：分别指定 instance 和 siteKey ，或合并到一起
+    if (options.instance) {
+      instance = options.instance;
+      siteKey = options.sitekey;
+    } else {
+      const parsedSiteKey = new URL(options.sitekey);
+      instance = parsedSiteKey.origin;
+      siteKey = parsedSiteKey.searchParams.get("sitekey");
+    }
 
     if (siteKey === null) {
       throw new Error("未定义 sitekey");
