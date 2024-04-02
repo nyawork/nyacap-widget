@@ -29,14 +29,33 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module">
-      import { NewCaptcha } from "/lib/main.tsx";
+    <!-- Module 调用法 -->
+    <!--    <script type="module">-->
+    <!--      import { NewCaptcha } from "/lib/main.tsx";-->
 
-      NewCaptcha({
-        el: document.getElementById("root"),
-        instance: "http://localhost:8080",
-        siteKey: "test",
-      });
+    <!--      NewCaptcha({-->
+    <!--        el: document.getElementById("root"),-->
+    <!--        instance: "http://localhost:8080",-->
+    <!--        siteKey: "test",-->
+    <!--      });-->
+    <!--    </script>-->
+
+    <!-- Classic 调用法 -->
+    <script type="module" async="async" src="/lib/main.tsx"></script>
+    <script>
+      // 加载验证码
+      let loadInterval;
+      loadInterval = setInterval(() => {
+        if (window.nyacap) {
+          window.nyacap.render(document.getElementById("root"), {
+            sitekey: "http://localhost:8080/widget?sitekey=test",
+            callback: (key) => {
+              alert(`验证成功: ${key}`);
+            },
+          });
+          clearInterval(loadInterval);
+        }
+      }, 100);
     </script>
   </body>
 </html>

@@ -11,7 +11,13 @@ interface CaptchaProps {
   siteKey: string;
   maxDots: number;
   maxFailCount: number;
-  inputName: string;
+
+  // 两种调用方式：构建一个 input ，或者用 callbacks
+  inputName?: string;
+
+  cbSuccess?: (key: string) => void;
+  cbFail?: () => void;
+  cbTimeout?: () => void;
 }
 const Captcha = ({
   instance,
@@ -19,6 +25,9 @@ const Captcha = ({
   maxDots,
   maxFailCount,
   inputName,
+  cbSuccess,
+  cbFail,
+  // cbTimeout, // TODO
 }: CaptchaProps) => {
   const [captKey, setCaptKey] = useState("");
   const [captStatus, setCaptStatus] = useState<Status>("default");
@@ -69,6 +78,9 @@ const Captcha = ({
       if (res.s) {
         setCaptStatus("success");
         captAutoRefreshCount.current = 0;
+        if (cbSuccess) {
+          cbSuccess(captKey);
+        }
       } else {
         if (captAutoRefreshCount.current > maxFailCount) {
           // 错误次数太多，歇一会吧
@@ -77,6 +89,9 @@ const Captcha = ({
           // 可以重试
           setCaptStatus("error");
           captAutoRefreshCount.current += 1;
+        }
+        if (cbFail) {
+          cbFail();
         }
       }
     } catch (e) {
@@ -163,16 +178,18 @@ const Captcha = ({
         </div>
       </Fragment>
 
-      <input
-        style={{
-          visibility: "hidden",
-        }}
-        name={inputName}
-        value={captStatus === "success" ? captKey : ""}
-        type="password"
-        required
-        readOnly
-      />
+      {inputName && (
+        <input
+          style={{
+            visibility: "hidden",
+          }}
+          name={inputName}
+          value={captStatus === "success" ? captKey : ""}
+          type="password"
+          required
+          readOnly
+        />
+      )}
     </>
   );
 };
