@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import { createRoot, type Root } from "react-dom/client";
 
 import Captcha from "./components/Captcha";
 
@@ -28,8 +28,9 @@ export const NewCaptcha = ({
   cbSuccess,
   cbFail,
   cbTimeout,
-}: NewCaptchaProps) =>
-  ReactDOM.createRoot(el).render(
+}: NewCaptchaProps): Root => {
+  const reactRoot = createRoot(el);
+  reactRoot.render(
     <React.StrictMode>
       <Captcha
         instance={instance}
@@ -44,7 +45,14 @@ export const NewCaptcha = ({
     </React.StrictMode>,
   );
 
+  return reactRoot;
+};
+
 // Classic captcha wrapper
+const nyacapManager = {
+  idMap: new Map<string, Root>(), // 记录 ID 和对应的 DOM 元素，方便下面的管理相关操作
+  counter: 0, // 记录当前页面上生成了多少个 NyaCap
+};
 (window as any).nyacap = {
   render: (
     el: HTMLElement,
@@ -73,7 +81,7 @@ export const NewCaptcha = ({
       throw new Error("未定义 sitekey");
     }
 
-    NewCaptcha({
+    const captchaRoot = NewCaptcha({
       el,
       instance,
       siteKey,
@@ -82,11 +90,19 @@ export const NewCaptcha = ({
       cbFail: options["error-callback"],
       cbTimeout: options["expired-callback"],
     });
+
+    nyacapManager.counter++; // 计数器自增
+    const captchaID = `nyacap-${nyacapManager.counter.toString()}`;
+    nyacapManager.idMap.set(captchaID, captchaRoot); // 记录映射关系，方便在下面使用 ID 来管理
   },
 
-  // remove: (id: string) => {
-  //   // TODO
-  // };
+  remove: (id: string) => {
+    if (nyacapManager.idMap.has(id)) {
+      nyacapManager.idMap.get(id)?.unmount();
+      nyacapManager.idMap.delete(id);
+    }
+  },
+
   // execute: (id: string) => {
   //   // TODO
   // };
