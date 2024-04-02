@@ -7,8 +7,6 @@ import CloseImg from "./images/close.svg";
 import RefreshImg from "./images/refresh.svg";
 
 interface CaptchaBodyProps {
-  // value: boolean;
-
   width: string;
   height: string;
   calcPosType: "dom" | "screen";
@@ -21,7 +19,6 @@ interface CaptchaBodyProps {
   confirm: (dots: Dot[]) => void;
 }
 const CaptchaBody = ({
-  // value,
   width,
   height,
   calcPosType,

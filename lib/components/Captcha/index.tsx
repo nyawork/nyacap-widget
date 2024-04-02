@@ -37,7 +37,14 @@ const Captcha = ({
     try {
       const captcha = await fetch(
         `${instance}/captcha/request/${siteKey}`,
-      ).then((res) => res.json());
+      ).then(async (res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          const errRes = await res.json();
+          throw new Error(errRes.message);
+        }
+      });
       setCaptKey(captcha.k);
       setImageBase64(captcha.b);
       setThumbBase64(captcha.t);
@@ -51,6 +58,9 @@ const Captcha = ({
     try {
       const res = await fetch(`${instance}/captcha/submit`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           d: dots,
           k: captKey,
@@ -125,7 +135,6 @@ const Captcha = ({
             <Tooltip
               overlay={
                 <CaptchaBody
-                  // value={popoverVisible}
                   width="300px"
                   height="240px"
                   maxDots={maxDots}
@@ -170,9 +179,12 @@ const Captcha = ({
           visibility: "hidden",
         }}
         name={inputName}
-        value={captKey}
+        value={captStatus === "success" ? captKey : ""}
+        type="password"
+        required
         readOnly
       />
+
       <Toaster />
     </>
   );
