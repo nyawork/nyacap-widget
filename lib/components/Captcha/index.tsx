@@ -4,6 +4,7 @@ import CaptchaBtn from "../CaptchaBtn";
 import Tooltip from "rc-tooltip";
 import CaptchaBody from "../CaptchaBody";
 
+import "./styles.css";
 import "./tooltip-styles.css";
 
 interface CaptchaProps {
@@ -123,13 +124,7 @@ const Captcha = ({
   return (
     <>
       <Fragment>
-        <div
-          className="cap-btn"
-          style={{
-            width: "100%",
-            height: "50px",
-          }}
-        >
+        <div className="cap-btn">
           <div className={`cap-btn__inner cap-active__${captStatus}`}>
             {/*弹出验证码*/}
             <Tooltip
