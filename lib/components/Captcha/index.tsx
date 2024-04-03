@@ -16,7 +16,7 @@ interface CaptchaProps {
   inputName?: string;
 
   cbSuccess?: (key: string) => void;
-  cbFail?: () => void;
+  cbError?: () => void;
   cbTimeout?: () => void;
 }
 const Captcha = ({
@@ -26,7 +26,7 @@ const Captcha = ({
   maxFailCount,
   inputName,
   cbSuccess,
-  cbFail,
+  cbError,
   cbTimeout,
 }: CaptchaProps) => {
   const [captKey, setCaptKey] = useState("");
@@ -88,6 +88,9 @@ const Captcha = ({
       setCaptTimeoutEvent(captcha.e * 1000); // 将 Unix 秒转换为毫秒
     } catch (e) {
       console.log(e);
+      if (cbError) {
+        cbError();
+      }
     }
   };
 
@@ -123,12 +126,12 @@ const Captcha = ({
           setCaptStatus("error");
           captAutoRefreshCount.current += 1;
         }
-        if (cbFail) {
-          cbFail();
-        }
       }
     } catch (e) {
       console.log(e);
+      if (cbError) {
+        cbError();
+      }
     }
   };
 

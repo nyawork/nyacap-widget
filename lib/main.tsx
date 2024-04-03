@@ -14,7 +14,7 @@ interface NewCaptchaProps {
   inputName?: string;
 
   cbSuccess?: (key: string) => void;
-  cbFail?: () => void;
+  cbError?: () => void;
   cbTimeout?: () => void;
 }
 export const NewCaptcha = ({
@@ -26,7 +26,7 @@ export const NewCaptcha = ({
 
   inputName = "captcha",
   cbSuccess,
-  cbFail,
+  cbError,
   cbTimeout,
 }: NewCaptchaProps): Root => {
   const reactRoot = createRoot(el);
@@ -39,7 +39,7 @@ export const NewCaptcha = ({
         maxFailCount={maxFailCount}
         inputName={inputName}
         cbSuccess={cbSuccess}
-        cbFail={cbFail}
+        cbError={cbError}
         cbTimeout={cbTimeout}
       />
     </React.StrictMode>,
@@ -87,7 +87,7 @@ const nyacapManager = {
       siteKey,
       inputName: undefined,
       cbSuccess: options.callback,
-      cbFail: options["error-callback"],
+      cbError: options["error-callback"],
       cbTimeout: options["expired-callback"],
     });
 
