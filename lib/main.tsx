@@ -96,10 +96,21 @@ const nyacapManager = {
     nyacapManager.idMap.set(captchaID, captchaRoot); // 记录映射关系，方便在下面使用 ID 来管理
   },
 
-  remove: (id: string) => {
-    if (nyacapManager.idMap.has(id)) {
-      nyacapManager.idMap.get(id)?.unmount();
-      nyacapManager.idMap.delete(id);
+  remove: (id?: string) => {
+    if (id) {
+      // 指定了 ID
+      if (nyacapManager.idMap.has(id)) {
+        // 指定了 ID ，则检查之前的定义
+        nyacapManager.idMap.get(id)?.unmount();
+        nyacapManager.idMap.delete(id);
+      } // else 没有指定 ID 的验证码，则忽略
+    } else {
+      // 没有指定 ID ，则 fallback 到第一个
+      if (nyacapManager.idMap.size > 0) {
+        const [id, root] = nyacapManager.idMap.entries().next().value;
+        root.unmount();
+        nyacapManager.idMap.delete(id);
+      } // else 没有任何可以卸载的元素
     }
   },
 
