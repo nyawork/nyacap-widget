@@ -37,10 +37,8 @@ jobs:
         run: pnpm install
       - name: Build with Vite
         run: |
-          pnpm build
+          pnpm run deploy
           touch dist/.nojekyll
-      - name: Rename script ext # to prevent MIME type conflict (don't know why it's `application/node`)
-        run: mv dist/widget.umd.cjs dist/widget.umd.js
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
