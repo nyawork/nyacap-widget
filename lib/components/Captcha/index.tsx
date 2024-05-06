@@ -1,4 +1,5 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment } from "preact";
+import { useRef, useState } from "preact/hooks";
 import CaptchaBtn from "../CaptchaBtn";
 import Tooltip from "rc-tooltip";
 import CaptchaBody from "../CaptchaBody";
