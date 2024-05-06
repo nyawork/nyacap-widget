@@ -184,8 +184,9 @@ const CaptchaBody = ({
             <img
               className="cap-wrap__picture"
               src={imageBase64}
-              alt=" "
+              alt="验证码主图"
               onClick={handleClickPos}
+              draggable={false}
             />
           )}
           <RenderDotItem />
