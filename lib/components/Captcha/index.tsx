@@ -10,7 +10,6 @@ import "./tooltip-styles.css";
 interface CaptchaProps {
   instance: string;
   siteKey: string;
-  maxDots: number;
   maxFailCount: number;
 
   // 两种调用方式：构建一个 input ，或者用 callbacks
@@ -23,7 +22,6 @@ interface CaptchaProps {
 const Captcha = ({
   instance,
   siteKey,
-  maxDots,
   maxFailCount,
   inputName,
   cbSuccess,
@@ -179,7 +177,6 @@ const Captcha = ({
                 <CaptchaBody
                   width="300px"
                   height="240px"
-                  maxDots={maxDots}
                   calcPosType="screen"
                   imageBase64={imageBase64}
                   thumbBase64={thumbBase64}

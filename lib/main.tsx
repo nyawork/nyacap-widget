@@ -5,7 +5,6 @@ interface NewCaptchaProps {
   el: HTMLElement;
   instance: string;
   siteKey: string;
-  maxDots?: number;
   maxFailCount?: number;
 
   // 两种调用方式：构建一个 input ，或者用 callbacks
@@ -19,7 +18,6 @@ export const NewCaptcha = ({
   el,
   instance,
   siteKey,
-  maxDots = 5,
   maxFailCount = 3,
 
   inputName = "captcha",
@@ -31,7 +29,6 @@ export const NewCaptcha = ({
     <Captcha
       instance={instance}
       siteKey={siteKey}
-      maxDots={maxDots}
       maxFailCount={maxFailCount}
       inputName={inputName}
       cbSuccess={cbSuccess}

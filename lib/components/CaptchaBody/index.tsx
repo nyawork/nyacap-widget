@@ -10,7 +10,6 @@ interface CaptchaBodyProps {
   width: string;
   height: string;
   calcPosType: "dom" | "screen";
-  maxDots: number;
   imageBase64: string | null;
   thumbBase64: string | null;
 
@@ -22,7 +21,6 @@ const CaptchaBody = ({
   width,
   height,
   calcPosType,
-  maxDots,
   imageBase64,
   thumbBase64,
   cancel,
@@ -67,10 +65,6 @@ const CaptchaBody = ({
    * @param e
    */
   const handleClickPos = (e: React.MouseEvent<HTMLImageElement>) => {
-    if (dots.length >= maxDots) {
-      return;
-    }
-
     e.preventDefault();
     const dom = e.currentTarget;
 
@@ -190,8 +184,9 @@ const CaptchaBody = ({
             <img
               className="cap-wrap__picture"
               src={imageBase64}
-              alt=" "
+              alt="验证码主图"
               onClick={handleClickPos}
+              draggable={false}
             />
           )}
           <RenderDotItem />
