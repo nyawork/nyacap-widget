@@ -65,7 +65,7 @@ const CaptchaBody = ({
    * @Description: 处理dot
    * @param e
    */
-  const handleClickPos = (e: MouseEvent) => {
+  const handleClickPos = (e: MouseEvent | TouchEvent) => {
     e.preventDefault();
     const dom = e.currentTarget;
 
@@ -76,27 +76,31 @@ const CaptchaBody = ({
     // const domY = this.calcLocationTop(dom)
     // ===============================================
 
-    let mouseX = e.clientX;
-    let mouseY = e.clientY;
+    let dotX, dotY;
+    if (e instanceof TouchEvent) {
+      // 触摸事件
+      dotX = e.touches[0].clientX;
+      dotY = e.touches[0].clientY;
+    } else {
+      // 鼠标点击事件
+      dotX = e.clientX;
+      dotY = e.clientY;
+    }
     if (calcPosType === "dom") {
-      mouseX += document.body.offsetLeft;
-      mouseY += document.body.offsetTop;
+      dotX += document.body.offsetLeft;
+      dotY += document.body.offsetTop;
     }
 
     // 计算点击的相对位置
-    const xPos = mouseX - domX;
-    const yPos = mouseY - domY;
-
-    // 转整形
-    const xp = parseInt(xPos.toString());
-    const yp = parseInt(yPos.toString());
+    const relX = dotX - domX;
+    const relY = dotY - domY;
 
     // 减去点的一半
     const newDots = [
       ...dots,
       {
-        x: xp - 11,
-        y: yp - 11,
+        x: Math.round(relX),
+        y: Math.round(relY),
         index: dots.length + 1,
       },
     ];

@@ -108,6 +108,7 @@
   -moz-border-radius: 22px;
   border-radius: 22px;
   cursor: default;
+  transform: translate(-50%, -50%);
 }
 
 .cap-wrap__footer {
