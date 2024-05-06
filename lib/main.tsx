@@ -1,6 +1,4 @@
-import React from "react";
-import { createRoot, type Root } from "react-dom/client";
-
+import { render } from "preact";
 import Captcha from "./components/Captcha";
 
 interface NewCaptchaProps {
@@ -26,30 +24,22 @@ export const NewCaptcha = ({
   cbSuccess,
   cbError,
   cbTimeout,
-}: NewCaptchaProps): Root => {
-  const reactRoot = createRoot(el);
-  reactRoot.render(
-    <React.StrictMode>
-      <Captcha
-        instance={instance}
-        siteKey={siteKey}
-        maxFailCount={maxFailCount}
-        inputName={inputName}
-        cbSuccess={cbSuccess}
-        cbError={cbError}
-        cbTimeout={cbTimeout}
-      />
-    </React.StrictMode>,
+}: NewCaptchaProps) => {
+  return render(
+    <Captcha
+      instance={instance}
+      siteKey={siteKey}
+      maxFailCount={maxFailCount}
+      inputName={inputName}
+      cbSuccess={cbSuccess}
+      cbError={cbError}
+      cbTimeout={cbTimeout}
+    />,
+    el,
   );
-
-  return reactRoot;
 };
 
 // Classic captcha wrapper
-const nyacapManager = {
-  idMap: new Map<string, Root>(), // 记录 ID 和对应的 DOM 元素，方便下面的管理相关操作
-  counter: 0, // 记录当前页面上生成了多少个 NyaCap
-};
 (window as any).nyacap = {
   render: (
     el: HTMLElement,
@@ -78,7 +68,7 @@ const nyacapManager = {
       throw new Error("未定义 sitekey");
     }
 
-    const captchaRoot = NewCaptcha({
+    NewCaptcha({
       el,
       instance,
       siteKey,
@@ -87,29 +77,11 @@ const nyacapManager = {
       cbError: options["error-callback"],
       cbTimeout: options["expired-callback"],
     });
-
-    nyacapManager.counter++; // 计数器自增
-    const captchaID = `nyacap-${nyacapManager.counter.toString()}`;
-    nyacapManager.idMap.set(captchaID, captchaRoot); // 记录映射关系，方便在下面使用 ID 来管理
   },
 
-  remove: (id?: string) => {
-    if (id) {
-      // 指定了 ID
-      if (nyacapManager.idMap.has(id)) {
-        // 指定了 ID ，则检查之前的定义
-        nyacapManager.idMap.get(id)?.unmount();
-        nyacapManager.idMap.delete(id);
-      } // else 没有指定 ID 的验证码，则忽略
-    } else {
-      // 没有指定 ID ，则 fallback 到第一个
-      if (nyacapManager.idMap.size > 0) {
-        const [id, root] = nyacapManager.idMap.entries().next().value;
-        root.unmount();
-        nyacapManager.idMap.delete(id);
-      } // else 没有任何可以卸载的元素
-    }
-  },
+  // remove: (id?: string) => {
+  //   // TODO
+  // },
 
   // execute: (id: string) => {
   //   // TODO
