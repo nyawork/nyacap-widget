@@ -1,4 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment } from "preact";
+import { useEffect, useState } from "preact/hooks";
 
 import "./styles.css";
 
@@ -64,11 +65,11 @@ const CaptchaBody = ({
    * @Description: 处理dot
    * @param e
    */
-  const handleClickPos = (e: React.MouseEvent<HTMLImageElement>) => {
+  const handleClickPos = (e: MouseEvent) => {
     e.preventDefault();
     const dom = e.currentTarget;
 
-    const { domX, domY } = getDomXY(dom);
+    const { domX, domY } = getDomXY(dom as HTMLElement);
     // ===============================================
     // @notice 如 getDomXY 不准确可尝试使用 calcLocationLeft 或 calcLocationTop
     // const domX = this.calcLocationLeft(dom)
@@ -134,19 +135,6 @@ const CaptchaBody = ({
     };
   };
 
-  const RenderDotItem = () => {
-    return dots.map((dot) => (
-      <Fragment key={dot.index}>
-        <div
-          className="cap-wrap__dot"
-          style={{ top: `${dot.y}px`, left: `${dot.x}px` }}
-        >
-          <span>{dot.index}</span>
-        </div>
-      </Fragment>
-    ));
-  };
-
   // useEffect(() => {
   //   if (value) {
   //     refresh()
@@ -189,7 +177,18 @@ const CaptchaBody = ({
               draggable={false}
             />
           )}
-          <RenderDotItem />
+
+          {/*渲染定位*/}
+          {dots.map((dot) => (
+            <Fragment key={dot.index}>
+              <div
+                className="cap-wrap__dot"
+                style={{ top: `${dot.y}px`, left: `${dot.x}px` }}
+              >
+                <span>{dot.index}</span>
+              </div>
+            </Fragment>
+          ))}
         </div>
         <div className="cap-wrap__footer">
           <div className="cap-wrap__ico">
