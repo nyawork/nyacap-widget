@@ -16,5 +16,5 @@
 
 ### 其他依赖
 
-- [React](https://github.com/facebook/react)
+- [Preact](https://github.com/preactjs/preact)
 - [rc-tooltip](https://github.com/react-component/tooltip)
