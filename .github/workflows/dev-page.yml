@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: latest
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -34,7 +34,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm i --frozen-lockfile
       - name: Build with Vite
         run: |
           pnpm run deploy

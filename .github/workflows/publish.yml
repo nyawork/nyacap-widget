@@ -16,7 +16,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: latest
       - run: pnpm i --frozen-lockfile
       - run: pnpm build
       - run: npm publish --access=public
