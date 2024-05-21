@@ -77,15 +77,18 @@ const CaptchaBody = ({
     // ===============================================
 
     let dotX, dotY;
-    if (e instanceof TouchEvent) {
+    if (
+      window.TouchEvent && // Firefox 不支持触摸事件
+      e instanceof TouchEvent
+    ) {
       // 触摸事件
       dotX = e.touches[0].clientX;
       dotY = e.touches[0].clientY;
-    } else {
+    } else if (e instanceof MouseEvent) {
       // 鼠标点击事件
       dotX = e.clientX;
       dotY = e.clientY;
-    }
+    } // 其他就没办法了
     if (calcPosType === "dom") {
       dotX += document.body.offsetLeft;
       dotY += document.body.offsetTop;
